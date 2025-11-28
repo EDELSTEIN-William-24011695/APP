@@ -1,0 +1,26 @@
+== Introduction ==
+Le '''Visitor Pattern''' (ou visiteur) est un [[patron de conception]] qui permet de séparer les données (vos objets) des opérations (les traitements) que l'on effectue sur elles.
+
+Son objectif principal est de respecter le [[Principe ouvert/fermé]] (''Open/Closed principle'') : permettre d'ajouter de nouvelles fonctionnalités à une application sans avoir à modifier le code des classes existantes.
+
+== Explication ==
+Le principe est de séparer les données (les objets) de la logique (les visiteurs). Les objets ne changent pas, mais on déplace les calculs, exports, tris, etc. dans des classes externes (les visiteurs).
+
+Ainsi, on peut utiliser le '''[[Double dispatch]]'''. C’est le visiteur qui va porter l’intelligence du code en demandant à l'objet s'il a le droit d'interagir avec lui :
+* On dit à l'objet : « Accepte ce visiteur » (<code>objet.accept(visiteur)</code>).
+* L'objet répond au visiteur : « C'est moi, traite-moi » (<code>visiteur.visit(this)</code>).
+
+== Problème ==
+Ce patron est particulièrement utile lorsque des classes sont reliées en [[Graphe (structure de données)|graphe]].
+
+Par exemple, au moment d'une exportation en [[XML]], le programme va chercher à parcourir tous les nœuds du graphe et exécuter l'export à chaque passage sur un nœud. Cependant :
+# Cet export, étant une méthode dans le graphe, peut créer des bugs dans le code produit.
+# Ce code d’export est vu comme un intrus sémantiquement, puisqu'il n’a rien à voir avec la nature de l'objet créé.
+
+== Solutions possibles ==
+Le patron de conception visiteur résout ce problème en utilisant la technique de la **double répartition** (''double dispatch''), qui aide à lancer la bonne méthode sans s’encombrer de blocs conditionnels.
+
+Plutôt que de laisser le client choisir la version de la méthode à appeler, la décision est déléguée aux objets passés en paramètre au visiteur :
+* Comme les objets connaissent leur propre classe, ils sont plus à même de choisir la méthode adaptée au visiteur.
+* Ils « acceptent » un visiteur et lui indiquent la méthode à exécuter.
+* Cela ne nécessite que des changements mineurs dans les classes pour éviter tout bug avec cette nouvelle implémentation.
