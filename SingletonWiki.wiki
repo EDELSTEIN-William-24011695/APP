@@ -1,0 +1,19 @@
+==1.2. Problème / solution : Singleton== 
+===Problèmes fréquents===
+*Dépendance globale trop forte (couplage)
+Comme tout le programme utilise la même instance, beaucoup de parties du code deviennent dépendantes de Singleton. Cela complique la modification ou l'évolution du projet, car toute modification du Singleton risque d'impacter d'autres segments du programme. Exemple : si le Singleton gère la configuration du site et que chaque page y accède directement, la moindre modification de ce Singleton peut obliger à revoir de nombreuses pages du projet.
+*Difficulté à tester 
+Le Singleton impose une seule instance pour tout le programme. Cela complique les tests, car on ne peut pas facilement remplacer cette instance par une version simulée. Les tests sont de moins en moins indépendants et plus difficiles à gérer. Exemple : si un Singleton s’occupe de lire des fichiers, on ne peut pas facilement le remplacer par une version “fausse” pour les tests, ce qui oblige à manipuler de vrais fichiers même quand on ne veut pas.
+*Risques en multithreading
+Si deux threads essayent de créer l’instance au même moment, il peut arriver que deux instances existent temporairement. Cela annule complètement le principe du Singleton et provoque des comportements imprévisibles. Exemple : deux utilisateurs déclenchent en même temps la création d’un Singleton qui gère une connexion à la base de données : deux connexions différentes peuvent être créées alors qu’il ne devrait y en avoir qu’une seule.
+*Risques de surcharge ou de mauvaise utilisation
+Le Singleton vit pendant toute la durée de l’application. On peut donc être tenté d’y mettre trop de choses “par facilité” : configurations, logs, données temporaires, etc. Il devient alors un “fourre-tout”, difficile à maintenir et à comprendre. Exemple : un Singleton qui devait à l’origine seulement stocker un paramètre finit par contenir des statistiques, des logs, des données utilisateurs… et devient trop lourd.
+===Solutions===
+*Limiter les dépendances
+Plutôt que d'utiliser le Singleton de manière directe, nous pourrions le dissimuler derrière des fonctions, des interfaces ou des services. De ce fait, le reste du code s'appuie moins sur le Singleton lui-même, ce qui optimise la structure globale. Exemple : au lieu d’appeler directement “SingletonConfig”, le programme utilise une interface “Config”, ce qui permet de modifier l’implémentation plus facilement.
+*Adapter l’usage pour les tests
+Il est possible d'établir des procédures de réinitialisation du Singleton dans un environnement de test, ou d'utiliser l'injection de dépendances pour remplacer l’instance par une version simulée. Cela rend les tests plus simples et plus fiables. Exemple : lors des tests, on remplace un Singleton « BaseDeDonnées » par un faux objet qui ne réalise pas de réelles connexions.
+*Sécuriser l’accès en multithreading
+On utilise des techniques qui garantissent qu’un seul thread peut créer l’instance à la fois. Cela empêche la création accidentelle de plusieurs instances et assure que le modèle reste correct même lorsque plusieurs actions se déclenchent en même temps. Exemple : on bloque la création temporairement pour que, même si deux utilisateurs se connectent en même temps, une seule instance de la ressource soit créée. 
+*Limiter ce que le Singleton stocke
+Pour éviter qu’il devienne trop lourd, il faut lui donner une seule responsabilité claire et éviter d’y ajouter des données inutiles. Le Singleton doit rester simple et ne pas servir de stockage global permanent. Exemple : si le Singleton est là pour gérer la configuration, il ne doit pas commencer à stocker les logs, les statistiques ou des sessions utilisateurs.
