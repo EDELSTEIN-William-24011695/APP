@@ -116,22 +116,22 @@ L’instance est créée uniquement à sa première utilisation.
 *v2 Inconvénients : 
 **pas thread-safe si utilisé tel quel.
 
->public class Singleton {
->    private static Singleton instance;
->    
->    private Singleton() {
->        System.out.println("Création du pool de connexions...");
->        // Initialisation coûteuse
->    }
->    
->    // ATTENTION : Cette version a un BUG en multi-thread !
->    public static Singleton getInstance() {
->        if (instance == null) {
->            instance = new Singleton();
->        }
->        return instance;
->    }
->}
+> public class Singleton {
+>     private static Singleton instance;
+>     
+>     private Singleton() {
+>         System.out.println("Création du pool de connexions...");
+>         // Initialisation coûteuse
+>     }
+>     
+>     // ATTENTION : Cette version a un BUG en multi-thread !
+>     public static Singleton getInstance() {
+>         if (instance == null) {
+>             instance = new Singleton();
+>         }
+>         return instance;
+>     }
+> }
 
 Métaphore : C'est comme ne préparer le café que quand quelqu'un en demande. "Lazy" signifie "paresseux". Économique mais risqué !
 Le problème critique du Lazy Singleton : Cette version a un bug GRAVE en environnement multi-thread (et tous les programmes modernes sont multi-thread).
@@ -231,4 +231,5 @@ Une des meilleures implémentations (simple et thread-safe).
 >String url = Singleton.INSTANCE.getProperty("database.url");
 
 Métaphore : C'est comme utiliser les jours de la semaine. Il n'y a qu'un seul LUNDI, qu'un seul MARDI... La JVM garantit qu'une enum n'a qu'une instance de chaque valeur.
+
 
