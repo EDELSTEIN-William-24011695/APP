@@ -10,6 +10,79 @@ Ainsi, on peut utiliser le '''[[Double dispatch]]'''. C’est le visiteur qui va
 * On dit à l'objet : « Accepte ce visiteur » (<code>objet.accept(visiteur)</code>).
 * L'objet répond au visiteur : « C'est moi, traite-moi » (<code>visiteur.visit(this)</code>).
 
+=== Exemple d'implémentation (Java) ===
+Dans cet exemple, nous avons une hiérarchie de formes géométriques (le graphe d'objets) et nous souhaitons ajouter une fonctionnalité d'export XML (le visiteur) sans modifier le code des formes.
+
+'''1. Les Interfaces'''
+L'interface Visiteur déclare une méthode de visite pour chaque type d'élément concret, et l'interface de l'Élément déclare la méthode qui accepte le visiteur.
+
+<syntaxhighlight lang="java">
+public interface Visitor {
+    String visitDot(Dot dot);
+    String visitCircle(Circle circle);
+}
+
+public interface Shape {
+    String accept(Visitor visitor);
+}
+</syntaxhighlight>
+
+'''2. Les Éléments Concrets'''
+Chaque forme concrète implémente la méthode <code>accept</code>. C'est ici que le "Double Dispatch" se produit : l'objet appelle la méthode spécifique du visiteur correspondant à sa propre classe.
+
+<syntaxhighlight lang="java">
+public class Dot implements Shape {
+    // ... attributs et constructeur ...
+    @Override
+    public String accept(Visitor visitor) {
+        return visitor.visitDot(this); // Le point se désigne lui-même
+    }
+}
+
+public class Circle implements Shape {
+    // ... attributs et constructeur ...
+    @Override
+    public String accept(Visitor visitor) {
+        return visitor.visitCircle(this); // Le cercle se désigne lui-même
+    }
+}
+</syntaxhighlight>
+
+'''3. Le Visiteur Concret'''
+C'est ici que réside la logique de l'export XML.
+
+<syntaxhighlight lang="java">
+public class XMLExportVisitor implements Visitor {
+    @Override
+    public String visitDot(Dot d) {
+        return "<dot><x>" + d.getX() + "</x></dot>";
+    }
+
+    @Override
+    public String visitCircle(Circle c) {
+        return "<circle><radius>" + c.getRadius() + "</radius></circle>";
+    }
+}
+</syntaxhighlight>
+
+'''4. Code Client'''
+Le client assemble les briques.
+
+<syntaxhighlight lang="java">
+public class Application {
+    public static void main(String[] args) {
+        Dot dot = new Dot(1, 10, 55);
+        Circle circle = new Circle(2, 23);
+
+        XMLExportVisitor exportVisitor = new XMLExportVisitor();
+
+        // On demande l'export sans que les objets sachent ce qu'est le XML
+        System.out.println(dot.accept(exportVisitor));
+        System.out.println(circle.accept(exportVisitor));
+    }
+}
+</syntaxhighlight>
+
 == Problème ==
 Ce patron est particulièrement utile lorsque des classes sont reliées en [[Graphe (structure de données)|graphe]].
 
