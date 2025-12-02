@@ -74,7 +74,7 @@ Cela provoque :
 **manque de lisibilité,
 **non-respect du principe de responsabilité unique (SRP).
 
-**Dépendances cachées
+*Dépendances cachées
 Le code peut sembler indépendant, mais utilise en réalité un état global partagé.
 Cela rend le comportement du programme plus difficile à comprendre et à prédire.
 
@@ -231,3 +231,4 @@ Une des meilleures implémentations (simple et thread-safe).
 >String url = Singleton.INSTANCE.getProperty("database.url");
 
 Métaphore : C'est comme utiliser les jours de la semaine. Il n'y a qu'un seul LUNDI, qu'un seul MARDI... La JVM garantit qu'une enum n'a qu'une instance de chaque valeur.
+
