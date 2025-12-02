@@ -13,6 +13,9 @@ Si deux threads essayent de créer l’instance au même moment, il peut arriver
 *Risques de surcharge ou de mauvaise utilisation
 Le Singleton vit pendant toute la durée de l’application. On peut donc être tenté d’y mettre trop de choses “par facilité” : configurations, logs, données temporaires, etc. Il devient alors un “fourre-tout”, difficile à maintenir et à comprendre. Exemple : un Singleton qui devait à l’origine seulement stocker un paramètre finit par contenir des statistiques, des logs, des données utilisateurs… et devient trop lourd.
 
+*Dépendances cachées
+Comme il peut être appelé depuis n’importe où, le code semble indépendant, mais dépend en réalité d’un état global partagé. Cela rend le comportement du programme plus difficile à comprendre.
+
 ===Solutions===
 
 *Limiter les dépendances
