@@ -24,3 +24,27 @@ Plutôt que de laisser le client choisir la version de la méthode à appeler, l
 * Comme les objets connaissent leur propre classe, ils sont plus à même de choisir la méthode adaptée au visiteur.
 * Ils « acceptent » un visiteur et lui indiquent la méthode à exécuter.
 * Cela ne nécessite que des changements mineurs dans les classes pour éviter tout bug avec cette nouvelle implémentation.
+
+== Avantages et inconvénients ==
+
+=== Avantages ===
+* Il est possible d'ajouter de nouvelles opérations sans modifier les classes des éléments visités en créant de nouveaux visiteurs pour implémenter de nouvelles fonctionnalités.
+** ''Exemple'' : Pour une nouvelle fonctionnalité d'exportation XML d'objets 'Cercle' et 'Carré', on crée un 'XmlExportVisitor' sans modifier les classes 'Cercle' ou 'Carré'.
+* La logique d'une opération est regroupée dans une seule classe.
+** ''Exemple'' : Toutes les règles de calcul de surface pour différents types de 'Forme' sont centralisées dans une seule classe 'CalculSurfaceVisitor'.
+* Facilité de la maintenance et la compréhension du code.
+** ''Exemple'' : La logique d'impression est regroupée dans une classe 'ImpressionVisitor', facilitant sa modification et sa compréhension.
+* On peut ajouter un nouveau comportement qui acceptera les objets de différentes classes.
+** ''Exemple'' : Un 'FactureVisitor' peut calculer le total en visitant des objets 'Commande' et 'LigneDeCommande' distincts.
+* Le pattern Visiteur encapsule le comportement spécifique à chaque visiteur dans des classes distinctes, permettant de réduire le couplage entre les objets et les opérations.
+** ''Exemple'' : La classe 'Cercle' n'a pas à connaître la logique d'exportation JSON, c'est le rôle du 'JsonExportVisitor'.
+
+=== Inconvénients ===
+* L'utilisation du pattern Visiteur peut rendre le code plus complexe, s'il y a un grand nombre de classes à visiter ou de visiteurs à implémenter.
+** ''Exemple'' : Avec 50 types de 'Document' et 10 visiteurs, cela impliquerait 500 méthodes 'visit()' à gérer.
+* Pour ajouter de nouveaux types d'objets à visiter, on doit modifier par exemple l'interface Visitor pour inclure une méthode pour chaque nouveau type.
+** ''Exemple'' : L'ajout d'une nouvelle 'Triangle' nécessite de modifier l'interface 'Visitor' et toutes ses implémentations pour ajouter 'visit(Triangle triangle)'.
+* Moins adapté pour les structures de données complexes, car il peut nécessiter la création de plusieurs visiteurs pour traiter toutes les opérations souhaitées.
+** ''Exemple'' : Pour une structure arborescente complexe, un seul visiteur pourrait être insuffisant, nécessitant plusieurs visiteurs coordonnés.
+* Les visiteurs n’ont parfois pas les accès nécessaires aux attributs ou méthodes privés des éléments qu’ils sont censés manipuler.
+** ''Exemple'' : Un 'SerializationVisitor' peut avoir besoin d'accéder à un attribut privé 'motDePasse' d'un 'Utilisateur', ce qui peut nécessiter l'exposition de méthodes d'accès publiques non souhaitées.
