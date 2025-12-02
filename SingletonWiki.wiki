@@ -233,11 +233,10 @@ v5 {
             return properties.getProperty(key);
         }
     }
+
+    // Utilisation
+    String url = Singleton.INSTANCE.getProperty("database.url");
 }
 }
-// Utilisation
-String url = Singleton.INSTANCE.getProperty("database.url");
 
 Métaphore : C'est comme utiliser les jours de la semaine. Il n'y a qu'un seul LUNDI, qu'un seul MARDI... La JVM garantit qu'une enum n'a qu'une instance de chaque valeur.
-
-
