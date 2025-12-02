@@ -87,7 +87,7 @@ L’instance est créée dès le chargement de la classe, même si elle n’est 
 **thread-safe par nature.
 *v1 Inconvénients : 
 **L'instance est créée même si jamais utilisée : peut gaspiller de la mémoire si l’instance est lourde et inutilisée.
---
+---
 >public class Singleton {
 >    // L'instance est créée immédiatement
 >    private static final Singleton INSTANCE = new Singleton();
@@ -108,7 +108,7 @@ L’instance est créée dès le chargement de la classe, même si elle n’est 
 >        // Retourner la valeur de configuration
 >    }
 >}
---
+---
 ====Version 2 : Lazy Singleton (Le paresseux - DANGEREUX !)====
 L’instance est créée uniquement à sa première utilisation.
 *v2 Avantages : 
@@ -231,6 +231,7 @@ Une des meilleures implémentations (simple et thread-safe).
 >String url = Singleton.INSTANCE.getProperty("database.url");
 
 Métaphore : C'est comme utiliser les jours de la semaine. Il n'y a qu'un seul LUNDI, qu'un seul MARDI... La JVM garantit qu'une enum n'a qu'une instance de chaque valeur.
+
 
 
 
