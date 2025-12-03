@@ -87,8 +87,7 @@ L’instance est créée dès le chargement de la classe, même si elle n’est 
 **thread-safe par nature.
 *v1 Inconvénients : 
 **L'instance est créée même si jamais utilisée : peut gaspiller de la mémoire si l’instance est lourde et inutilisée.
-v1{
-{
+<syntaxhighlight lang="java">
     public class Singleton {
         // L'instance est créée immédiatement
         private static final Singleton INSTANCE = new Singleton();
@@ -109,16 +108,14 @@ v1{
             // Retourner la valeur de configuration
         }
     }
-}
-}
+</syntaxhighlight>
 ====Version 2 : Lazy Singleton (Le paresseux - DANGEREUX !)====
 L’instance est créée uniquement à sa première utilisation.
 *v2 Avantages : 
 **créé seulement si besoin.
 *v2 Inconvénients : 
 **pas thread-safe si utilisé tel quel.
-v2 {
-{
+<syntaxhighlight lang="java">
     public class Singleton {
         private static Singleton instance;
     
@@ -135,8 +132,7 @@ v2 {
             return instance;
         }
     }
-}
-}
+</syntaxhighlight>
 Métaphore : C'est comme ne préparer le café que quand quelqu'un en demande. "Lazy" signifie "paresseux". Économique mais risqué !
 Le problème critique du Lazy Singleton : Cette version a un bug GRAVE en environnement multi-thread (et tous les programmes modernes sont multi-thread).
 
@@ -156,8 +152,7 @@ Ce bug est vicieux car il n'arrive pas toujours. Seulement quand deux threads ar
 *v3 Inconvénient :
 **Performance catastrophique ! Après que l'instance est créée, on n'a plus besoin du verrou. Mais synchronized vérifie quand même à CHAQUE appel.
 **Si getInstance() est appelée 1 million de fois, vous avez 1 million de vérifications de verrou pour rien !
-v3 {
-{
+<syntaxhighlight lang="java">
     public class Singleton {
         private static Singleton instance;
     
@@ -173,13 +168,12 @@ v3 {
             return instance;
         }
     }
-}}
+</syntaxhighlight>
 Métaphore : C'est comme mettre un vigile devant la machine à café. Une seule personne à la fois peut s'en approcher. Sûr mais lent !
 
 ====Version 4 : Double-Checked Locking (L'optimisé)====
 La version recommandée : sécurisée + performante.
-v4 {
-{
+<syntaxhighlight lang="java">
     public class Singleton {
         // volatile : garantit la visibilité entre threads
         private static volatile Singleton instance;
@@ -202,8 +196,7 @@ v4 {
         return instance;
         }
     }
-}
-}
+</syntaxhighlight>
 ====Version 5 : Enum Singleton (Le moderne et élégant)====
 Une des meilleures implémentations (simple et thread-safe).
 
@@ -213,8 +206,7 @@ Une des meilleures implémentations (simple et thread-safe).
 **impossible de créer plusieurs instances via la réflexion.
 *v5 Inconvénient :
 **moins flexible si on veut transformer le code plus tard.
-v5 {
-{
+<syntaxhighlight lang="java">
     public enum Singleton {
         INSTANCE; // L'unique instance
     
@@ -236,7 +228,7 @@ v5 {
 
     // Utilisation
     String url = Singleton.INSTANCE.getProperty("database.url");
-}
-}
+</syntaxhighlight>
 
 Métaphore : C'est comme utiliser les jours de la semaine. Il n'y a qu'un seul LUNDI, qu'un seul MARDI... La JVM garantit qu'une enum n'a qu'une instance de chaque valeur.
+
