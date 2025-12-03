@@ -1,3 +1,7 @@
+==1.1 Introduction ==
+Le '''Singleton Pattern''' (ou singleton) est un [[patron de conception]] qui permet de garantir l'unique instanciation d'une classe.
+Son principe est d'empécher la création de plus d'un objet en réutilisant l'objet déja crée.
+
 ==1.2. Problème / solution : Singleton== 
 ===Problèmes fréquents===
 
@@ -231,5 +235,6 @@ Une des meilleures implémentations (simple et thread-safe).
 </source>
 
 Métaphore : C'est comme utiliser les jours de la semaine. Il n'y a qu'un seul LUNDI, qu'un seul MARDI... La JVM garantit qu'une enum n'a qu'une instance de chaque valeur.
+
 
 
